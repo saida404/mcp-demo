@@ -1,6 +1,7 @@
 from database.konekcija import get_connection
+from database.exceptions import  (ValidationError, NotFoundError, AlreadyPaidError, DatabaseError)
 
-ALLOWED_TIPOVI =  {"struja", "voda", "plin", "internet", "telefon"}
+ALLOWED_TIPOVI =  {"struja", "voda", "plin", "internet", "telefon", "komunalije" }
 
 def validate_tip(tip_racuna):
     if not tip_racuna:
@@ -8,35 +9,26 @@ def validate_tip(tip_racuna):
 
     return tip_racuna.lower() in ALLOWED_TIPOVI
 
-def kreiraj_racun(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec):
+def kreiraj_racun(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina):
     
     tip_racuna = tip_racuna.lower()
 
     if not validate_tip(tip_racuna):
-        return {
-            "success" : False,
-            "error" : "Tip racuna nije dozvoljen"
-        }
+        raise ValidationError("Tip racuna nije dozvoljen")
 
     try:
         connection = get_connection()
         cursor = connection.cursor()
 
         cursor.execute("""
-            insert into Racuni(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec) values (?,?,?,?,?)                   
-    """, (id_korisnik, tip_racuna, iznos, rok_uplate, mjesec))
+            insert into Racuni(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina) values (?,?,?,?,?,?)                   
+    """, (id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina))
         
         connection.commit()
         connection.close()
 
-        return {"success": True,
-            "message": "Racun uspjesno dodan"}
-
     except Exception as e:
-        return {
-            "success" : False,
-            "error" : str(e)
-        }
+        raise DatabaseError(f"Greska baze: {str(e)}")
     
 
 
@@ -52,16 +44,11 @@ def get_racuni_od_korisnika(id_korisnik):
         
         rows = cursor.fetchall()
         connection.close()
-        return { "success": True,
-                "data": [dict(row) for row in rows]
-        }
-    except Exception as e:
-        return {
-            "success" : True,
-            "error": str(e)
-        }
+        
+        return [dict(row) for row in rows]
     
-
+    except Exception as e:
+        raise DatabaseError(f"Greska pri dohvacanju racuna: {str(e)}")
 
 
 def get_neplaceni(id_korisnik):
@@ -75,57 +62,45 @@ def get_neplaceni(id_korisnik):
         connection.close()
 
        
-        return {
-            "success": True,
-            "data": [dict(row) for row in rows]
-        }
+        return [dict(row) for row in rows]
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e) }
+        raise DatabaseError(f"Greska pri dohvacanju neplacenih racuna: {str(e)}")
+
 
     
-def plati_racun(id_korisnik, tip_racuna, mjesec):
+def plati_racun(id_korisnik, tip_racuna, mjesec, godina):
     tip_racuna = tip_racuna.lower()
 
     try: 
         connection = get_connection()
         cursor = connection.cursor()
 
-        cursor.execute("""select id_racuni from Racuni where id_korisnik = ? and tip_racuna = ? and mjesec = ? and placeno = 0 """, (id_korisnik, tip_racuna, mjesec,))
+        cursor.execute("""select id_racuni from Racuni where id_korisnik = ? and tip_racuna = ? and mjesec = ? and godina = ? and placeno = 0 """, (id_korisnik, tip_racuna, mjesec, godina))
 
         racun = cursor.fetchone()
 
         if not racun:
             connection.close()
-            return {
-                "success": False,
-                "error": "Racun ne postoji ili je vec placen"
-            }
+            raise NotFoundError("Racun ne postoji ili je vec placen")
         id_racuni = racun["id_racuni"]
 
         cursor.execute("""update Racuni set placeno = 1 where id_racuni = ? """, (id_racuni,))
 
         connection.commit()
         connection.close()
-        return {
-            "success": True,
-            "message": "Racun je placen"
-        }
+        
+    except NotFoundError:
+        raise
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        raise DatabaseError(f"Greska pri placanju racuna: {str(e)}")
 
 
 
 
 
-def get_izvjestaj_podaci(id_korisnik, mjesec):
-
+def get_izvjestaj_podaci(id_korisnik, mjesec, godina):
     try:
         connection = get_connection()
         cursor = connection.cursor()
@@ -138,14 +113,16 @@ def get_izvjestaj_podaci(id_korisnik, mjesec):
                 sum(case when placeno = 0 then iznos else 0 end) as ukupno_neplaceno
             from racuni
             where id_korisnik = ?
-            and mjesec = ?
-        """, (id_korisnik, mjesec))
+            and mjesec = ? and godina = ?
+                       
+        """, (id_korisnik, mjesec, godina))
 
         stats = cursor.fetchone()
         connection.close()
 
         return {
             "mjesec": mjesec,
+            "godina": godina,
             "pristiglo_racuna": stats["pristiglo_racuna"] or 0,
             "ukupno_za_platiti": round(stats["ukupno_za_platiti"] or 0, 2),
             "ukupno_placeno": round(stats["ukupno_placeno"] or 0, 2),
@@ -153,10 +130,7 @@ def get_izvjestaj_podaci(id_korisnik, mjesec):
         }
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": str(e)
-        }
+        raise DatabaseError(f"Greska baze: {str(e)}")
     
 
 def sacuvaj_izvjestaj_history(id_korisnik, mjesec, report_data):
