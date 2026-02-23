@@ -10,7 +10,6 @@ def tools_plati_racun(id_korisnik: int,
 
     mjesec_norm = normalizuj_input_mjeseca(mjesec)
 
- 
+    plati_racun(id_korisnik, tip_racuna, mjesec_norm, godina)   
 
-
-    return plati_racun(id_korisnik, tip_racuna, mjesec_norm, godina)
+    return {"status": "success", "message": "Racun placen"}

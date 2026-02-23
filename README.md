@@ -18,3 +18,27 @@ Dalje želim dodati i neki resource, testirati rad servera i poboljšati ga.
 Claude je povezan sa serverom i radi za sada sve što treba.  
 
 Dalje dodati neki resource i prompt, fine-tunati postojeće tools.
+
+
+Struktura projekta:
+- database/ - rad sa lokalnom bazom podataka, CRUD
+- tools/ - logika koju koriste mcp tool funkcije
+- main.py - FastMCP server i registracija alata
+- tests/ - testovi za logiku alata
+
+Pokretanje:
+1) kloniranje projekta:
+    git clone 
+    cd server-proba
+
+2) kreiranje i aktivacija virtualnog okruzenja
+    python3 -m venv venv
+    (Mac/Linux) - > source env/bin/activate 
+    (Windows) - >  env\Scripts\activate
+
+3) instalacija potrebnih alata
+    pip install -r requirements.txt
+
+
+pokretanje MCP servera : python main.py
+pokretanje testova: pytest ili detaljnjije pytest -v

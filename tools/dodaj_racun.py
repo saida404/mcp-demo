@@ -10,7 +10,6 @@ def tools_dodaj_racun(id_korisnik: int,
                       godina: int):
     
     mjesec_norm = normalizuj_input_mjeseca(mjesec)
+    kreiraj_racun(id_korisnik, tip_racuna, iznos,rok_uplate,mjesec_norm,godina)
 
-  
-
-    return kreiraj_racun(id_korisnik, tip_racuna, iznos,rok_uplate,mjesec_norm,godina)
+    return {"status": "success", "message": "Racun kreiran"}

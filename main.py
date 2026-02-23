@@ -9,10 +9,12 @@ from tools.dodaj_racun import tools_dodaj_racun
 from tools.plati_racun import tools_plati_racun
 from tools.generisi_mjesecni import tools_izvjestaj
 from tools.dohvati_neplacene import tools_dohvati_neplacene
+from tools.pomocne.ucitaj_resurs import ucitaj_ogranicenja
+
 
 @mcp.tool()
 def dodaj_racun_tool(id_korisnik: int, tip_racuna: str, iznos: float, rok_uplate: str, mjesec: str, godina: int):
-    """ Dodaje novi racun.
+    """ Tool dodaje novi racun.
       Parametri:
     - id_korisnik: integer ID korisnika
     - tip_racuna: mora biti jedan od [struja, voda, plin, komunalije, telefon, internet]
@@ -27,7 +29,9 @@ def dodaj_racun_tool(id_korisnik: int, tip_racuna: str, iznos: float, rok_uplate
 
 @mcp.tool()
 def plati_racun_tool(id_korisnik: int, tip_racuna: str, mjesec: str, godina: int):
-    """Placa racun za korisnika, tip racuna mora biti jedan od struja voda plin komunalije telefon internet, godina je integer, mjesec je string """
+    """Tool placa racun za korisnika, 
+    tip racuna mora biti jedan od struja voda plin komunalije telefon internet, godina je integer, mjesec je string
+   """
     return tools_plati_racun(id_korisnik, tip_racuna, mjesec, godina)
 
 @mcp.tool()
@@ -49,6 +53,10 @@ def dohvati_neplacene_tool(id_korisnik: int):
     """
     return tools_dohvati_neplacene(id_korisnik)
 
+@mcp.resource("billing://ogranicenja")
+def ogranicenja_resource():
+    """ Resource koji agent koristi za čitanje limita plaćanja. """
+    return ucitaj_ogranicenja()
 
 if __name__ == "__main__":
     mcp.run() 

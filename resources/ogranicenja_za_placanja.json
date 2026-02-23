@@ -1,0 +1,10 @@
+{
+  "ogranicenja": {
+    "voda": 70,
+    "struja": 120,
+    "internet": 80,
+    "telefon": 50,
+    "plin": 150,
+    "komunalije": 30
+  }
+}
