@@ -1,6 +1,68 @@
-Use-case ovog mog servera je simulacija finansijskog agenta za upravljanje računima, jer je to problem koji je blizak našem stvarnom problemu.  
-Ideja je da AI agent može koristiti dostupne tools za unos, praćenje, "plaćanje" i generisanje izvještaja.  
-Ja sam koristila Python, te SQLite lokalnu bazu podataka.
+Ovo je moja ultra pojednostavljena verzija finansijskog agenta za upravljanje računima.
+Izabrala sam ovaj usecase jer je blizak našem problemu kojim ćemo se baviti.
+
+Tech stack: Python, FastMCP, SQLite
+
+Struktura projekta:
+- database/ - rad sa lokalnom SQL bazom podataka, CRUD operacije
+- tools/ - logika koju koriste MCP tool funkcije
+- main.py - FastMCP server i registracija alata
+- tests/ - testovi za logiku alata
+- screenshots/ - slike interakcije Claud Desktop sa ovim serverom
+
+
+Tools:
+
+- dodaj_racun_tool: dodaje račun u bazu podataka za korisnika
+
+        parametri: id_korisnik (int) -> jedinstveni id korisnika
+                   tip_racuna (string) -> vrsta računa (struja,voda,plin,komunalije,telefon,internet)
+                   iznos (float) -> iznos računa
+                   rok_uplate (string) -> rok plaćanja u formatu YYYY-MM-DD
+                   mjesec (string) -> mjesec na koji se račun odnosi
+                   godina (integer) -> godina na koju se odnosi
+
+- plati_racun_tool: plaća (u ovom pojednostavljenom slučaju ažurira) račun korisnika
+
+        parametri: id_korisnik (int)
+                   tip_racuna (string)
+                   mjesec(string) i godina (int)
+
+- izvjesta_tool: generiše kompletan mjesečni izvještaj za korisnika, plaćene i neplaćene račune i ukupne troškove
+
+        parametri: id_korisnik (int)
+                   mjesec (string)
+                   godina (int)
+
+- dohvati_neplacene: dohvaća listu svih neplaćenih računa za korisnika
+
+        parametri: id_korisnik
+
+Pokretanje:
+1) kloniranje projekta:
+    git clone 
+    cd server-proba
+
+2) kreiranje i aktivacija virtualnog okruzenja
+    python3 -m venv venv
+    (Mac/Linux) - > source env/bin/activate 
+    (Windows) - >  env\Scripts\activate
+
+3) instalacija potrebnih alata
+    pip install -r requirements.txt
+
+4) pokretanje MCP servera 
+     python main.py
+
+5) pokretanje testova: 
+    pytest ili detaljnjije pytest -v
+
+
+
+
+
+My notes:
+
 
 Day 1:  
 Uradila sam osnovne stvari i postavila osnovni kostur za zadatak.  
@@ -19,26 +81,5 @@ Claude je povezan sa serverom i radi za sada sve što treba.
 
 Dalje dodati neki resource i prompt, fine-tunati postojeće tools.
 
-
-Struktura projekta:
-- database/ - rad sa lokalnom bazom podataka, CRUD
-- tools/ - logika koju koriste mcp tool funkcije
-- main.py - FastMCP server i registracija alata
-- tests/ - testovi za logiku alata
-
-Pokretanje:
-1) kloniranje projekta:
-    git clone 
-    cd server-proba
-
-2) kreiranje i aktivacija virtualnog okruzenja
-    python3 -m venv venv
-    (Mac/Linux) - > source env/bin/activate 
-    (Windows) - >  env\Scripts\activate
-
-3) instalacija potrebnih alata
-    pip install -r requirements.txt
-
-
-pokretanje MCP servera : python main.py
-pokretanje testova: pytest ili detaljnjije pytest -v
+Day 3 i 4:
+Dodala sam resource i promt. Testirala do sada urađeno. Pokušati učiniti korišćenje toolsa više user-friendly, sredila sam readme, dodala screenshotove config fajla i interakcije Clauda sa serverom.

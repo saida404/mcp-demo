@@ -1,0 +1,66 @@
+{
+  "savjeti": [
+    {
+      "id": 1,
+      "title": "Pravilo 50/30/20",
+      "description": "Raspodijeli prihode tako da 50% ide na potrebe, 30% na želje, a 20% na štednju i otplatu duga.",
+      "category": "budgeting",
+      "tags": ["planiranje", "štednja", "budžet"]
+    },
+    {
+      "id": 2,
+      "title": "Automatski štedni plan",
+      "description": "Postavi automatsko prebacivanje malog iznosa s računa na štedni račun svaki mjesec.",
+      "category": "saving",
+      "tags": ["automatizacija", "štednja"]
+    },
+    {
+      "id": 3,
+      "title": "Investiraj u znanje",
+      "description": "Ulaži u edukaciju o investiranju, tržištima i financijama – dugoročno vraća profit.",
+      "category": "education",
+      "tags": ["učenje", "investicije"]
+    },
+    {
+      "id": 4,
+      "title": "Emergency fond",
+      "description": "Ciljaj na najmanje 3–6 mjeseci životnih troškova na strani za hitne slučajeve.",
+      "category": "saving",
+      "tags": ["sigurnost", "rezerva"]
+    },
+    {
+      "id": 5,
+      "title": "Praćenje troškova",
+      "description": "Koristi aplikacije ili tablice da pratiš svaki trošak — vidi gdje odlazi novac.",
+      "category": "tracking",
+      "tags": ["analiza", "budžet"]
+    },
+    {
+      "id": 6,
+      "title": "Diversifikacija ulaganja",
+      "description": "Nemoj staviti sve u jednu košaru — razdijeli ulaganja po više klasa imovine.",
+      "category": "investing",
+      "tags": ["ulaganjesavjeti", "diverzifikacija"]
+    },
+    {
+      "id": 7,
+      "title": "Izbjegavaj impulsivne kupovine",
+      "description": "Prije svake veće kupovine čekaj 48 sati — često shvatiš da ti nije hitno.",
+      "category": "spending",
+      "tags": ["disciplina", "planiranje"]
+    },
+    {
+      "id": 8,
+      "title": "Godišnji financijski pregled",
+      "description": "Jednom godišnje pregledaj financijske ciljeve i prilagodi plan ako treba.",
+      "category": "planning",
+      "tags": ["revizija", "strategija"]
+    },
+    {
+       "id": 101,
+       "title": "Saidino pravilo 100 KM",
+       "category": "spending",
+       "description": "Ako želiš kupiti nešto što košta više od 100 KM, primijeni SAIDA_100_PRAVILO: postavi sebi tri pitanja — (1) Da li mi ovo zaista treba?, (2) Da li imam barem 3x veći iznos od cijene na računu?, (3) Hoće li mi ovo biti važno i za 30 dana? Ako je odgovor 'ne' na bilo koje pitanje, odgodi kupovinu."
+    }
+  ]
+}
