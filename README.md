@@ -3,6 +3,7 @@ Izabrala sam ovaj usecase jer je blizak našem problemu kojim ćemo se baviti.
 
 Tech stack: Python, FastMCP, SQLite
 
+
 Struktura projekta:
 - database/ - rad sa lokalnom SQL bazom podataka, CRUD operacije
 - tools/ - logika koju koriste MCP tool funkcije
@@ -28,7 +29,7 @@ Tools:
                    tip_racuna (string)
                    mjesec(string) i godina (int)
 
-- izvjesta_tool: generiše kompletan mjesečni izvještaj za korisnika, plaćene i neplaćene račune i ukupne troškove
+- izvjestaj_tool: generiše kompletan mjesečni izvještaj za korisnika, plaćene i neplaćene račune i ukupne troškove
 
         parametri: 
                    mjesec (string)
@@ -38,7 +39,7 @@ Tools:
 
         parametri: bez parametara
 
- - posalji_mail_duplikat_tool: ukoliko se prilikom unosa računa u bazu desi da je za taj period već pristigao taj tip računa, agent obavještava korisnika i pita ga da li želi da pošalje mail izdavaću računa pitajući da li je greška.
+ - posalji_mail_duplikat_tool: ukoliko se prilikom unosa računa u bazu desi da je za taj period već pristigao taj tip računa, agent obavještava korisnika i pita ga da li želi da pošalje mail izdavaču računa pitajući da li je greška.
  
     Parametri: 
         tip_racuna: str, 
@@ -47,13 +48,13 @@ Tools:
 
 Pokretanje:
 1) kloniranje projekta:
-    git clone 
-    cd server-proba
+    git clone  https://github.com/saida404/mcp-demo
+    cd mcp-demo
 
 2) kreiranje i aktivacija virtualnog okruzenja
     python3 -m venv venv
-    (Mac/Linux) - > source env/bin/activate 
-    (Windows) - >  env\Scripts\activate
+    (Mac/Linux) - > source venv/bin/activate 
+    (Windows) - >  venv\Scripts\activate
 
 3) instalacija potrebnih alata
     pip install -r requirements.txt
@@ -64,37 +65,9 @@ Pokretanje:
 5) pokretanje testova: 
     pytest ili detaljnjije pytest -v
 
-
+Projekt koristi lokalnu SQLite bazu za razvoj i testiranje. 
+Baza nije uključena u repozitorij i potrebno ju je inicijalizirati prije pokretanja projekta.
 
 --------------------------------------
 
-My notes:
-
-Day 1:  
-Uradila sam osnovne stvari i postavila osnovni kostur za zadatak.  
-Koristim SQLite lokalnu bazu koja za sad sadrži par osnovnih tabela koje omogućavaju unos, praćenje i generisanje izvještaja.  
-Napravila sam neke jednostavne tools kako bih testirala da li sve funkcioniše kako treba.  
-Claude trenutno uspješno koristi dostupne tools, vrši upisivanja u bazu, ažuriranja i generisanje izvještaja.  
-
-Sljedeći korak je poboljšanje postojećih tools-a tako da budu "realističniji", bolji error handling,  
-dodavanje novih funkcionalnosti i ispunjavanje zadatih kriterija 
-
-Day 2:  
-Nastavila sam raditi na poboljšanju postojećih funkcionalnosti servera, dodala sam bolju validaciju i error handling,  
-te sam probala tools učiniti malo realističnijim i sigurnijim za korištenje od strane agenta.  
-Dalje želim dodati i neki resource, testirati rad servera i poboljšati ga.  
-Claude je povezan sa serverom i radi za sada sve što treba.  
-
-Dalje dodati neki resource i prompt, fine-tunati postojeće tools.
-
-Day 3 i 4:
-Dodala sam resource i promt. Testirala do sada urađeno. Pokušati učiniti korišćenje toolsa više user-friendly, sredila sam readme, dodala screenshotove config fajla i interakcije Clauda sa serverom.
-
-Day 5:
-Uredila sam kod tako da agent više ne mora pitati za id_korisnika, već je id hardkodiran da je uvijek 1. Ažurirala sam testove da budu u skladu sa ovim promjenama. 
-
-Dodala sam provjeru prilikom dodavanja računa u bazu. Ako račun za dati period (mjesec i godinu) tog tipa već postoji, agent nudi korisniku da pošalje mail izdavaču računa i pita o grešci i slično.
-Ja sam ovdje koristila neki bezveze mail koji sam imala, radi testiranja. 
-Agent jee uspio da detektuje dupli unos i ponudi slanje maila, te ga je nakon potvrde poslao (screenshot 10 i 11) 
-
-(imala sam problema sa Claude Desktopom, izgleda da je bio neki globalni problem, pa sam 3 sata pokušala pronaći grešku misleći da je do mog servera)
+Za daily progress updates pogledati notes_daily_progress.txt

@@ -1,0 +1,30 @@
+My notes:
+
+Day 1:  
+Uradila sam osnovne stvari i postavila osnovni kostur za zadatak.  
+Koristim SQLite lokalnu bazu koja za sad sadrži par osnovnih tabela koje omogućavaju unos, praćenje i generisanje izvještaja.  
+Napravila sam neke jednostavne tools kako bih testirala da li sve funkcioniše kako treba.  
+Claude trenutno uspješno koristi dostupne tools, vrši upisivanja u bazu, ažuriranja i generisanje izvještaja.  
+
+Sljedeći korak je poboljšanje postojećih tools-a tako da budu "realističniji", bolji error handling,  
+dodavanje novih funkcionalnosti i ispunjavanje zadatih kriterija 
+
+Day 2:  
+Nastavila sam raditi na poboljšanju postojećih funkcionalnosti servera, dodala sam bolju validaciju i error handling,  
+te sam probala tools učiniti malo realističnijim i sigurnijim za korištenje od strane agenta.  
+Dalje želim dodati i neki resource, testirati rad servera i poboljšati ga.  
+Claude je povezan sa serverom i radi za sada sve što treba.  
+
+Dalje dodati neki resource i prompt, fine-tunati postojeće tools.
+
+Day 3 i 4:
+Dodala sam resource i promt. Testirala do sada urađeno. Pokušati učiniti korišćenje toolsa više user-friendly, sredila sam readme, dodala screenshotove config fajla i interakcije Clauda sa serverom.
+
+Day 5:
+Uredila sam kod tako da agent više ne mora pitati za id_korisnika, već je id hardkodiran da je uvijek 1. Ažurirala sam testove da budu u skladu sa ovim promjenama. 
+
+Dodala sam provjeru prilikom dodavanja računa u bazu. Ako račun za dati period (mjesec i godinu) tog tipa već postoji, agent nudi korisniku da pošalje mail izdavaču računa i pita o grešci i slično.
+Ja sam ovdje koristila neki bezveze mail koji sam imala, radi testiranja. 
+Agent jee uspio da detektuje dupli unos i ponudi slanje maila, te ga je nakon potvrde poslao (screenshot 10 i 11) 
+
+(imala sam problema sa Claude Desktopom, izgleda da je bio neki globalni problem, pa sam 3 sata pokušala pronaći grešku misleći da je do mog servera)
