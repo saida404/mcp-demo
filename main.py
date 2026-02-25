@@ -11,15 +11,16 @@ from tools.plati_racun import tools_plati_racun
 from tools.generisi_mjesecni import tools_izvjestaj
 from tools.dohvati_neplacene import tools_dohvati_neplacene
 from tools.pomocne.ucitaj_resurs import ucitaj_ogranicenja
-
+from tools.tools_mail import tools_posalji_mail
 
 
 @mcp.tool()
-def dodaj_racun_tool(id_korisnik: int, tip_racuna: str, iznos: float, rok_uplate: str, mjesec: str, godina: int):
+def dodaj_racun_tool(tip_racuna: str, iznos: float, rok_uplate: str, mjesec: str, godina: int):
     """ Tool dodaje novi racun za korisnika u bazu podataka.
+
+    Koristi ovaj tool kada korisnik zatraži dodavanje novog računa, kada agent dobije informacije o računu koji nije u bazi.
       
       Parametri:
-    -id_korisnik: (integer) ID korisnika
     - tip_racuna: (string) mora biti jedan od [struja, voda, plin, komunalije, telefon, internet]
     - iznos: (float) iznos računa
     - rok_uplate: (string), datum u formatu YYYY-MM-DD
@@ -27,38 +28,58 @@ def dodaj_racun_tool(id_korisnik: int, tip_racuna: str, iznos: float, rok_uplate
     -godina (integer)
 
     """    
-    return tools_dodaj_racun(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina)
+    return tools_dodaj_racun(tip_racuna, iznos, rok_uplate, mjesec, godina)
 
 
 @mcp.tool()
-def plati_racun_tool(id_korisnik: int, tip_racuna: str, mjesec: str, godina: int):
-    """Tool placa racun za korisnika, 
+def plati_racun_tool(tip_racuna: str, mjesec: str, godina: int):
+    """ Tool placa racun za korisnika, 
+
+    Koristi ovaj tool kada korisnik želi platiti račun i kada korisnik potvrdi da želi platiti račun nakon 
+    što agent prikaže informacije o računu i upozori na rok uplate.
+    
     Parametri:
-    id kornisnika(int) koji placa racun, 
     tip racuna (string) moze biti neki od: struja, voda, plin, komunalije, telefon, internet
     mjesec (string) i godina (integer)
        """
-    return tools_plati_racun(id_korisnik, tip_racuna, mjesec, godina)
+    return tools_plati_racun(tip_racuna, mjesec, godina)
 
 @mcp.tool()
-def izvjestaj_tool(id_korisnik: int, mjesec: str, godina: int):
-    """  Generise mjesecni izvještaj za korisnika.
+def izvjestaj_tool(mjesec: str, godina: int):
+    """  Generiše mjesečni izvještaj za korisnika.
+
+    Koristi kada korisnik zatraži izvještaj za određeni mjesec i godinu, 
+    ili kada agent želi ponuditi generisanje izvještaja nakon što korisnik plati račun.
+
     Parametri:
-    id korisnika (integer)
     mjesec (string) i godina (integer)
     
     """
-    return tools_izvjestaj(id_korisnik,mjesec,godina)
+    return tools_izvjestaj(mjesec,godina)
 
 
 @mcp.tool()
-def dohvati_neplacene_tool(id_korisnik: int) :
-    """ Dohvata listu neplacenih racuna za korisnika.
-    Parametri:
-    id korisnika (integer)
+def dohvati_neplacene_tool() :
+    """ Dohvaća listu neplaćenih računa za korisnika.
+    
+    Koristi kada korinsik želi vidjeti koje račune ima neplaćene.
+
+    Tools ne prima parametre jer uvijek vraća listu aktivnih neplaćenih računa
     
     """
-    return tools_dohvati_neplacene(id_korisnik)
+    return tools_dohvati_neplacene()
+
+@mcp.tool()
+def posalji_mail_duplikat_tool(tip_racuna: str, mjesec: str, godina: int):
+    """Tool šalje mail pružaocu usluga kada je detektovan duplikat računa.
+    Koristi ovaj tool kada dodavanje računa vrati grešku duplikata i korisnik potvrdi slanje maila.
+    
+    Parametri:
+    - tip_racuna: (string) tip računa za koji je detektovan duplikat
+    - mjesec: (string) mjesec računa
+    - godina: (integer) godina računa
+    """
+    return tools_posalji_mail(tip_racuna, mjesec, godina)
 
 @mcp.resource("placanje://ogranicenja")
 def ogranicenja_resource():
@@ -92,6 +113,7 @@ def billing_assistant_prompt():
     "Dobrodošli! Ja sam vaš asistent za upravljanje računima. 
     Kako vam mogu pomoći danas?"
     """
+
 
 
 if __name__ == "__main__":

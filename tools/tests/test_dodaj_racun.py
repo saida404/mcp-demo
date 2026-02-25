@@ -11,7 +11,6 @@ def test_tools_dodaj_racun_success(mock_normalizuj, mock_kreiraj):
     mock_normalizuj.return_value = "januar"
 
     result = tools_dodaj_racun(
-        id_korisnik=1,
         tip_racuna="struja",
         iznos=150,
         rok_uplate="2026-03-01",
@@ -41,7 +40,6 @@ def test_tools_dodaj_racun_validation_error(mock_kreiraj):
     mock_kreiraj.side_effect = ValidationError("Tip racuna nije dozvoljen")
 
     result = tools_dodaj_racun(
-        1,
         "pogresan_tip",
         100,
         "2026-03-01",

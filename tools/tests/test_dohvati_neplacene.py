@@ -10,7 +10,7 @@ def test_tools_dohvati_neplacene(mock_get_neplaceni):
         {"id_racuni": 2, "id_korisnik": 1, "tip_racuna": "voda", "iznos": 50, "rok_uplate": "2024-07-05", "mjesec": "juli", "godina": 2024, "placeno": 0}
     ]
 
-    result = tools_dohvati_neplacene(1)
+    result = tools_dohvati_neplacene()
 
 
     assert result["success"] is True

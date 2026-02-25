@@ -1,3 +1,4 @@
+
 from database.konekcija import get_connection
 from database.exceptions import  (ValidationError, NotFoundError, AlreadyPaidError, DatabaseError)
 
@@ -20,12 +21,21 @@ def kreiraj_racun(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina):
         connection = get_connection()
         cursor = connection.cursor()
 
+        cursor.execute("""select id_racuni from Racuni where id_korisnik = ? and tip_racuna = ? and mjesec = ? and godina = ? """, (id_korisnik, tip_racuna, mjesec, godina))
+
+        postoji = cursor.fetchone()
+
+        if postoji:
+            raise ValidationError(f"Za {mjesec}/{godina} je već pristigao račun za {tip_racuna}")
+        
         cursor.execute("""
             insert into Racuni(id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina) values (?,?,?,?,?,?)                   
     """, (id_korisnik, tip_racuna, iznos, rok_uplate, mjesec, godina))
         
         connection.commit()
         connection.close()
+    except ValidationError:
+        raise
 
     except Exception as e:
         raise DatabaseError(f"Greska baze: {str(e)}")

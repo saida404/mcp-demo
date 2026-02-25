@@ -13,9 +13,9 @@ Struktura projekta:
 
 Tools:
 
-- dodaj_racun_tool: dodaje račun u bazu podataka za korisnika
+- dodaj_racun_tool: dodaje račun u bazu podataka za korisnika ako on već nije dodan, ako račun za dati period i tip računa već postoje u bazi obavještava agenta te agent nudi slanje maila izdavaču računa.
 
-        parametri: id_korisnik (int) -> jedinstveni id korisnika
+        parametri: 
                    tip_racuna (string) -> vrsta računa (struja,voda,plin,komunalije,telefon,internet)
                    iznos (float) -> iznos računa
                    rok_uplate (string) -> rok plaćanja u formatu YYYY-MM-DD
@@ -24,19 +24,26 @@ Tools:
 
 - plati_racun_tool: plaća (u ovom pojednostavljenom slučaju ažurira) račun korisnika
 
-        parametri: id_korisnik (int)
+        parametri: 
                    tip_racuna (string)
                    mjesec(string) i godina (int)
 
 - izvjesta_tool: generiše kompletan mjesečni izvještaj za korisnika, plaćene i neplaćene račune i ukupne troškove
 
-        parametri: id_korisnik (int)
+        parametri: 
                    mjesec (string)
                    godina (int)
 
-- dohvati_neplacene: dohvaća listu svih neplaćenih računa za korisnika
+- dohvati_neplacene_tool: dohvaća listu svih neplaćenih računa za korisnika
 
-        parametri: id_korisnik
+        parametri: bez parametara
+
+ - posalji_mail_duplikat_tool: ukoliko se prilikom unosa računa u bazu desi da je za taj period već pristigao taj tip računa, agent obavještava korisnika i pita ga da li želi da pošalje mail izdavaću računa pitajući da li je greška.
+ 
+    Parametri: 
+        tip_racuna: str, 
+        mjesec: str, 
+        godina: int
 
 Pokretanje:
 1) kloniranje projekta:
@@ -59,10 +66,9 @@ Pokretanje:
 
 
 
-
+--------------------------------------
 
 My notes:
-
 
 Day 1:  
 Uradila sam osnovne stvari i postavila osnovni kostur za zadatak.  
@@ -71,7 +77,7 @@ Napravila sam neke jednostavne tools kako bih testirala da li sve funkcioniše k
 Claude trenutno uspješno koristi dostupne tools, vrši upisivanja u bazu, ažuriranja i generisanje izvještaja.  
 
 Sljedeći korak je poboljšanje postojećih tools-a tako da budu "realističniji", bolji error handling,  
-dodavanje novih funkcionalnosti i ispunjavanje zadatih kriterija :D  
+dodavanje novih funkcionalnosti i ispunjavanje zadatih kriterija 
 
 Day 2:  
 Nastavila sam raditi na poboljšanju postojećih funkcionalnosti servera, dodala sam bolju validaciju i error handling,  
@@ -83,3 +89,12 @@ Dalje dodati neki resource i prompt, fine-tunati postojeće tools.
 
 Day 3 i 4:
 Dodala sam resource i promt. Testirala do sada urađeno. Pokušati učiniti korišćenje toolsa više user-friendly, sredila sam readme, dodala screenshotove config fajla i interakcije Clauda sa serverom.
+
+Day 5:
+Uredila sam kod tako da agent više ne mora pitati za id_korisnika, već je id hardkodiran da je uvijek 1. Ažurirala sam testove da budu u skladu sa ovim promjenama. 
+
+Dodala sam provjeru prilikom dodavanja računa u bazu. Ako račun za dati period (mjesec i godinu) tog tipa već postoji, agent nudi korisniku da pošalje mail izdavaču računa i pita o grešci i slično.
+Ja sam ovdje koristila neki bezveze mail koji sam imala, radi testiranja. 
+Agent jee uspio da detektuje dupli unos i ponudi slanje maila, te ga je nakon potvrde poslao (screenshot 10 i 11) 
+
+(imala sam problema sa Claude Desktopom, izgleda da je bio neki globalni problem, pa sam 3 sata pokušala pronaći grešku misleći da je do mog servera)

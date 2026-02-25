@@ -1,7 +1,6 @@
 from pathlib import Path
 import json
 
-# projekt/ root folder
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RESOURCES_DIR = PROJECT_ROOT / "resources"
 CONFIG_PATH = RESOURCES_DIR / "ogranicenja_za_placanja.json"

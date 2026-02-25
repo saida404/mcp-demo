@@ -9,7 +9,6 @@ def test_tools_plati_racun_success(mock_normalizuj, mock_plati):
     mock_normalizuj.return_value = "februar"
 
     result = tools_plati_racun(
-        id_korisnik=1,
         tip_racuna="voda",
         mjesec="Februar",
         godina=2026
@@ -17,8 +16,7 @@ def test_tools_plati_racun_success(mock_normalizuj, mock_plati):
 
     mock_normalizuj.assert_called_once_with("Februar")
 
-    mock_plati.assert_called_once_with(
-        1,
+    mock_plati.assert_called_once_with(1,
         "voda",
         "februar",
         2026
@@ -37,6 +35,6 @@ def test_tools_plati_racun_error(mock_normalizuj, mock_plati):
     mock_normalizuj.return_value = "juni"
     mock_normalizuj.side_effect = NotFoundError("Racun ne postoji ili je vec placen")
 
-    result = tools_plati_racun(1,"struja","januar",2026)
+    result = tools_plati_racun("struja","januar",2026)
     assert result["success"] is False
     assert "Racun ne postoji" in result["error"]
