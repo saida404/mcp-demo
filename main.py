@@ -12,6 +12,7 @@ from tools.generisi_mjesecni import tools_izvjestaj
 from tools.dohvati_neplacene import tools_dohvati_neplacene
 from tools.pomocne.ucitaj_resurs import ucitaj_ogranicenja
 from tools.tools_mail import tools_posalji_mail
+from tools.pomocne.ucitaj_resurs import ucitaj_savjete
 
 
 @mcp.tool()
@@ -86,6 +87,17 @@ def ogranicenja_resource():
     """ Resource koji agent koristi za čitanje limita plaćanja. """
     return ucitaj_ogranicenja()
 
+@mcp.resource("placanje://savjeti")
+def savjeti_resource():
+    """ Resource koji agent koristi za čitanje finansijskih savjeta. 
+       
+         Koristi ovaj resource nakon generisanja mjesečnog izvještaja da ponudi relevantan savjet korisniku.
+        Koristi resurs kada korisnik zatraži savjet vezan za upravljanje finansijama ili nakon što korisnik plati račun 
+        da ponudi savjet za bolje upravljanje finansijama. 
+        Koristi isključivo savjete iz resursa, nemoj izmišljati savjete.
+     """
+    return ucitaj_savjete()
+
 @mcp.prompt()
 def billing_assistant_prompt():
     """System prompt za asistenta."""
@@ -97,16 +109,20 @@ def billing_assistant_prompt():
     - Plaćanje računa na zahtjev korisnika
     - Dodavanje novih računa
     - Generisanje mjesečnih izvještaja
+    - Prosljeđivanje maila pružaocu usluga u slučaju detekcije duplikata računa uz dozvolu korisnika
 
     Pravila ponašanja:
     - Uvijek se obraćaj korisniku ljubazno i profesionalno
-    - Prije svake akcije provjeri da li imaš ID korisnika
+    - Ako korisnik zatraži unos računa, koristi dodaj_racun_tool, ukoliko račun već postoji, obavijesti korisnika i pitaj da li želi poslati mail pružaocu usluga
+    - Šalji mail samo ako korisnik eksplicitno potvrdi da želi poslati mail 
     - Nakon plaćanja računa uvijek potvrdi uspješnost akcije
     - Ako korisnik želi platiti sve račune odjednom, uradi to redom jedan po jedan
     - Upozoravaj korisnika na račune kojima se bliži rok uplate
     -Ako iznos računa prelazi 100 KM, obavezno zatraži potvrdu od korisnika prije plaćanja. 
     Jasno prikaži iznos i pitaj: "Račun iznosi više od 100KM. Da li ste sigurni da želite izvršiti plaćanje?" Nastavi s plaćanjem samo ako korisnik eksplicitno potvrdi.   
-
+    - Nakon generisanja mjesečnog izvještaja, pročitaj resurs "placanje://savjeti" 
+    i ponudi jedan relevantan savjet korisniku, nemoj izmišljati savjete, koristi samo one koji su u resursu.
+    
     Dostupni tipovi računa: struja, voda, plin, komunalije, telefon, internet.
 
     Primjer pozdrava:
