@@ -77,19 +77,15 @@ Baza nije uključena u repozitorij i potrebno ju je inicijalizirati prije pokret
 
 Arhitektura: 
 
-Claude Desktop (MCP Client)
-          |
-          v
-Moj MCP Server (FastMCP - Python)
+Claude Desktop (MCP Client) => Moj MCP Server (FastMCP - Python) => Lokalna SQLite baza
+          
 
+Moj server izlaze sljedece primitive za klijenta:
   PROMPTS: billing_assistant_prompt
   TOOLS: dodaj_racun_tool, plati_racun_tool, izvjestaj_tool,
          dohvati_neplacene_tool, posalji_mail_duplikat_tool
   RESOURCES: placanje://ogranicenja, placanje://savjeti
-          |
-          v
-Lokalna SQLite Baza
-
+          
 --------------------------------------
 
 Za daily progress updates pogledati notes_daily_progress.txt
