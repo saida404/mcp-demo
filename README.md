@@ -47,10 +47,10 @@ Tools:
 
  - posalji_mail_duplikat_tool: ukoliko se prilikom unosa računa u bazu desi da je za taj period već pristigao taj tip računa, agent obavještava korisnika i pita ga da li želi da pošalje mail izdavaču računa pitajući da li je greška.
  
-    Parametri: 
-        tip_racuna: str, 
-        mjesec: str, 
-        godina: int
+            Parametri: 
+                tip_racuna: str, 
+                mjesec: str, 
+                godina: int
 
 Pokretanje:
 1) kloniranje projekta:
@@ -76,36 +76,37 @@ Baza nije uključena u repozitorij i potrebno ju je inicijalizirati prije pokret
 
 
 Arhitektura: 
-+--------------------------------------------------+
-|                 Claude Desktop                   |
-|--------------------------------------------------|
-|  MCP Client                                      |
-+---------------------------+----------------------+
-                            |
-                            v
-+--------------------------------------------------+
-|                   Moj MCP Server                 |
-|                 (FastMCP - Python)               |
-|--------------------------------------------------|
-|  PROMPTS                                         |
-|   - billing_assistant_prompt                     |
-|                                                  |
-|  TOOLS                                           |
-|   - dodaj_racun_tool                             |
-|   - plati_racun_tool                             |
-|   - izvjestaj_tool                               |
-|   - dohvati_neplacene_tool                       |
-|   - posalji_mail_duplikat_tool                   |
-|                                                  |
-|  RESOURCES                                       |
-|   - placanje://ogranicenja                       |
-|   - placanje://savjeti                           |
-+---------------------------+----------------------+
-                            |
-                            v
-+--------------------------------------------------+
-|              Lokalna SQLite Baza                 |
-|--------------------------------------------------|
++------------------+
+| Claude Desktop    |
+|------------------|
+| MCP Client        |
++--------+---------+
+         |
+         v
++---------------------------+
+| Moj MCP Server            |
+| (FastMCP - Python)        |
+|---------------------------|
+| PROMPTS:                  |
+| - billing_assistant_prompt|
+|                            
+| TOOLS:                     
+| - dodaj_racun_tool         
+| - plati_racun_tool         
+| - izvjestaj_tool           
+| - dohvati_neplacene_tool   
+| - posalji_mail_duplikat_tool|
+|                            
+| RESOURCES:                 
+| - placanje://ogranicenja   
+| - placanje://savjeti       
++--------+------------------+
+         |
+         v
++------------------+
+| Lokalna SQLite    |
+| Baza              |
++------------------+
 
 
 --------------------------------------
