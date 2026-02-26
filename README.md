@@ -4,13 +4,19 @@ Izabrala sam ovaj usecase jer je blizak našem problemu kojim ćemo se baviti.
 Tech stack: Python, FastMCP, SQLite
 
 
-Struktura projekta:
-- database/ - rad sa lokalnom SQL bazom podataka, CRUD operacije
-- tools/ - logika koju koriste MCP tool funkcije
-- main.py - FastMCP server i registracija alata
-- tests/ - testovi za logiku alata
-- screenshots/ - slike interakcije Claud Desktop sa ovim serverom
+👉 Za demonstraciju interakcije Claude Desktopa sa serverom pogledajte video na YouTube-u:
+        🔗 https://youtu.be/bnFNgY-5Q-c
 
+Struktura projekta:
+
+            - database/ - rad sa lokalnom SQL bazom podataka, CRUD operacije
+            - screenshots/ - slike interakcije Claud Desktop sa ovim serverom
+            - resources/ - json fajlovi koje izlazu resursi
+            - tools/ - logika koju koriste  tool funkcije                                 
+                    - tests/ - testovi za logiku alata
+                    - pomocne/ folder koji sadrzi pomocne funkcije 
+                               (ucitavnje jsona, validacija mjeseca itd.)
+            - main.py - FastMCP server, registracija toolsa i resursa.
 
 Tools:
 
@@ -67,6 +73,40 @@ Pokretanje:
 
 Projekt koristi lokalnu SQLite bazu za razvoj i testiranje. 
 Baza nije uključena u repozitorij i potrebno ju je inicijalizirati prije pokretanja projekta.
+
+
+Arhitektura: 
++--------------------------------------------------+
+|                 Claude Desktop                   |
+|--------------------------------------------------|
+|  MCP Client                                      |
++---------------------------+----------------------+
+                            |
+                            v
++--------------------------------------------------+
+|                   Moj MCP Server                 |
+|                 (FastMCP - Python)               |
+|--------------------------------------------------|
+|  PROMPTS                                         |
+|   - billing_assistant_prompt                     |
+|                                                  |
+|  TOOLS                                           |
+|   - dodaj_racun_tool                             |
+|   - plati_racun_tool                             |
+|   - izvjestaj_tool                               |
+|   - dohvati_neplacene_tool                       |
+|   - posalji_mail_duplikat_tool                   |
+|                                                  |
+|  RESOURCES                                       |
+|   - placanje://ogranicenja                       |
+|   - placanje://savjeti                           |
++---------------------------+----------------------+
+                            |
+                            v
++--------------------------------------------------+
+|              Lokalna SQLite Baza                 |
+|--------------------------------------------------|
+
 
 --------------------------------------
 
